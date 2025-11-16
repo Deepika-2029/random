@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Color Changer</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #6C63FF;
+            --secondary-color: #2C2C54;
+            --accent-color: #FF6584;
+            --light-color: #F8F9FA;
+            --dark-color: #121212;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6C63FF, #2C2C54);
+            color: white;
+            min-height: 100vh;
+            transition: all 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .lead {
+            font-size: 1.25rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+        }
+
+        .color-display {
+            background-color: white;
+            color: #333;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .color-code {
+            font-family: 'Courier New', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #5a52e0;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(108, 99, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-accent:hover {
+            background-color: #ff4d6d;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 101, 132, 0.4);
+        }
+
+        .color-history {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .color-history-item {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .color-history-item:hover {
+            transform: scale(1.2);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .instructions {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+        }
+
+        .instructions h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .instructions ol {
+            text-align: left;
+            padding-left: 1.5rem;
+        }
+
+        .instructions li {
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            margin-top: 3rem;
+            padding: 1.5rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .container {
+                padding: 2rem 1.5rem;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Random Color Generator</h1>
+        <p class="lead">Click the button to change the background to a random color!</p>
+        
+        <div class="color-display">
+            <p>Current Background Color:</p>
+            <p class="color-code" id="colorCode">#6C63FF</p>
+        </div>
+        
+        <div class="btn-group">
+            <button class="btn btn-primary" id="changeColorBtn">
+                <i class="fas fa-palette"></i> Change Background Color
+            </button>
+            <button class="btn btn-secondary" id="copyColorBtn">
+                <i class="fas fa-copy"></i> Copy Color Code
+            </button>
+            <button class="btn btn-accent" id="resetColorBtn">
+                <i class="fas fa-undo"></i> Reset to Default
+            </button>
+        </div>
+        
+        <div class="color-history" id="colorHistory"></div>
+        
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-random"></i>
+                </div>
+                <h4>Random Colors</h4>
+                <p>Generate completely random colors with a single click.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-history"></i>
+                </div>
+                <h4>Color History</h4>
+                <p>Keep track of your recently generated colors.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-clipboard"></i>
+                </div>
+                <h4>Copy Color Codes</h4>
+                <p>Easily copy HEX codes for use in your projects.</p>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3>How It Works</h3>
+            <ol>
+                <li>Click the "Change Background Color" button to generate a random color</li>
+                <li>Use the "Copy Color Code" button to copy the HEX value to your clipboard</li>
+                <li>Click on any color in the history to apply it again</li>
+                <li>Use the "Reset to Default" button to return to the original color</li>
+            </ol>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Created with JavaScript Event Handling | Random Color Generator</p>
+    </footer>
+
+    <!-- Bootstrap 5 JS with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // DOM Elements
+        const changeColorBtn = document.getElementById('changeColorBtn');
+        const copyColorBtn = document.getElementById('copyColorBtn');
+        const resetColorBtn = document.getElementById('resetColorBtn');
+        const colorCode = document.getElementById('colorCode');
+        const colorHistory = document.getElementById('colorHistory');
+        
+        // Default color
+        const defaultColor = '#6C63FF';
+        let colorHistoryArray = [];
+        
+        // Function to generate a random hex color
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+        
+        // Function to change the background color
+        function changeBackgroundColor() {
+            const randomColor = getRandomColor();
+            document.body.style.background = randomColor;
+            colorCode.textContent = randomColor;
+            
+            // Add to color history
+            addToColorHistory(randomColor);
+        }
+        
+        // Function to add color to history
+        function addToColorHistory(color) {
+            // Avoid duplicates in history
+            if (!colorHistoryArray.includes(color)) {
+                colorHistoryArray.unshift(color);
+                
+                // Keep only last 10 colors
+                if (colorHistoryArray.length > 10) {
+                    colorHistoryArray.pop();
+                }
+                
+                updateColorHistoryDisplay();
+            }
+        }
+        
+        // Function to update color history display
+        function updateColorHistoryDisplay() {
+            colorHistory.innerHTML = '';
+            
+            colorHistoryArray.forEach(color => {
+                const colorItem = document.createElement('div');
+                colorItem.className = 'color-history-item';
+                colorItem.style.backgroundColor = color;
+                colorItem.title = color;
+                
+                colorItem.addEventListener('click', () => {
+                    document.body.style.background = color;
+                    colorCode.textContent = color;
+                });
+                
+                colorHistory.appendChild(colorItem);
+            });
+        }
+        
+        // Function to copy color code to clipboard
+        function copyColorCode() {
+            navigator.clipboard.writeText(colorCode.textContent)
+                .then(() => {
+                    // Show success feedback
+                    const originalText = copyColorBtn.innerHTML;
+                    copyColorBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    
+                    setTimeout(() => {
+                        copyColorBtn.innerHTML = originalText;
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error('Failed to copy: ', err);
+                    alert('Failed to copy color code to clipboard');
+                });
+        }
+        
+        // Function to reset to default color
+        function resetToDefault() {
+            document.body.style.background = defaultColor;
+            colorCode.textContent = defaultColor;
+        }
+        
+        // Event Listeners
+        changeColorBtn.addEventListener('click', changeBackgroundColor);
+        copyColorBtn.addEventListener('click', copyColorCode);
+        resetColorBtn.addEventListener('click', resetToDefault);
+        
+        // Keyboard shortcut (Spacebar to change color)
+        document.addEventListener('keydown', (event) => {
+            if (event.code === 'Space') {
+                event.preventDefault(); // Prevent space from scrolling the page
+                changeBackgroundColor();
+            }
+        });
+        
+        // Initialize with default color in history
+        addToColorHistory(defaultColor);
+    </script>
+</body>
+</html>
